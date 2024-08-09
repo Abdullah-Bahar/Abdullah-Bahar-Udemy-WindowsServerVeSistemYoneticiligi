@@ -1,0 +1,33 @@
+
+	DOSYA PAYLAŞIMI
+
+* Aynı ağda bulunan cihazların birbirleri ile dosya paylaşımı
+
+* Klasöre paylaşım izni verme :
+	- Klasöre sağ tık özellikler -> paylaşıom -> gelişmiş paylaşım... -> Bu klasörü paylaş tikini işaretliyoruz 
+	- Aynı ekranda izinler kısmından tam denetimi işaretliyoruz.
+
+* Windows + r yapıp
+	- "\\<ip adress>" (bizimle dosyayı paylaşacak olan pc'nin ip'si)
+	- daha sonra hedef pc'ninin oturum bilgilerini girdiğimizde bağlantı gerçekleşir
+
+* Eğer dosyayı paylaşırken oturum açılması gerektiği için kendi oturum bilgilerimizi vermek istemeyebiliriz.
+Bu durumda Bilgisayar Yönetiminden yeni bir kullanıcı oluşturabilirz. Dosyayı paylaştığımız kişinin bunu 
+erişmesi için yeni oluşturduğumuz kullanıcı bilgileri kullanarak giriş yapabilir.
+* Ancak budurmda da izin yetkisi sınırlı olabilir (klasörü açma, silme vs. ). 
+Bu durumda izinleri ayarlamak için :
+	- Klasör sağ tık -> özellikler -> güvenlik
+	- "Grup ya da kullanıcı adlar" kısmının altıdaki "düzenle" seçeneğine tıklıyoruz
+	- Açılan ekran ekle değiştirebiliyoruz
+	- Açılan ekrandaki "Seçilecek nesne adlarını girin" kısmına yeni oluşturduğumuz kullanıcı adını yazıp "Adları denetle"ye tıklıyoruz
+	- Sonrasında tamamm'a tıklayıp kullanıcıyı eklemiş oluyoruz
+	- tamam dedikten sonra bir önceki pencereye geliyoruz. 
+	- Kullanıcıların gözüktüğü bu ekranda eklediğimiz kullanıcının izinlerini aşağı taraftan değiştirebiliriz.
+	- İzinlerin bulunduğu kısımdan dilediğiniz izinleri verebilir ya da kaldırabilirsiniz.
+
+	Kısaca :
+	- yeni kullanıcı oluşturuyoruz
+	- bu kullanıcıyı dosya'yaya erişebilen kullanıcıların arasında ekliyoruz
+	- izinlerini ayarlıyoruz
+
+-----------------

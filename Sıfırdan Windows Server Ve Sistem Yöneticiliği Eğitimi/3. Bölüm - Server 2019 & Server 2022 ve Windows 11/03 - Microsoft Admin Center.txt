@@ -1,0 +1,87 @@
+------------------
+
+	WINDOWS ADMIN CENTER NEDEN ÇIKTI ?
+
+* Bulut sistemlerinin yaygınlaşması ile birlikte daha büyük sunucu sistemlerini yönetmek için bazı konsollar ve
+yönetim araçları kullanıyorduk. Ancak bunlar yetersiz kalınca microsoft, bu ihtiyacın karşılanabilmesi adına webden yönetilen,
+her hangi bir ara programa gerek kalmadan buluttaki sistemler dahil tüm sistemleri tek bir noktadan yönetebileceğimiz 
+Windows Admin Center'ı duyurdu
+
+* Web tabanlı, sunucu yönetim yazılımıdır.
+
+------------------
+
+	WIN ADMİN CENTER KURULUM ÇEŞİTLERİ
+
+* DC üzerine kurulum yapılmaz. Çünkü DC yönetim aracı üzerine tekrar yönetim için bir şey kurulmaz.
+
+* Ya DC dışında bir server'a ya da PC'ye kurulum yapılır.
+
+* 2 Modu vardır :
+	> Decktop Mode : Win 10 veya üstü
+		- Eğer bunu kurarsak kurduğumuz pc'den erişim yapabiliriz. Networkteki diğer pc'lerde erişim sağlaymaayız.
+
+	> Gateway Mode : Server 2016 veya 2019
+		- Bunu kurarsak Networkteki her hangi bir pc'den web tarayıcısı ile erişim sağlayabiliyoruz.
+
+
+-----------------
+
+	WIN ADMIN CENTER'A ERİŞME
+
+* Microsoft edge ve Crome tarayıcıları ile erişim sağlayabiliriz. Diğer tarayıcılar pek sağlıklı çalışmıyorlar bu app için. 
+
+* WAC'a erişmek için tarayıcımız bir sertifikaya ihtiyacı var. WAC'a girmeye çalışırken eğer bu sertifika yoksa indirme seçeneği sunar.
+
+------------------
+
+	WIN ADMIN CENTER KURMA ?
+
+* Microsoft Evolotion Center'dan indirilir.
+
+* Burdan msi uzantılı dosyamızı indirdikten sonra gerisi halledebeliriz.
+
+* msi uzantılı doyayı çalıştırdığımız yere göre server yada pc kendisi otomatik olarak gateway ya da desktop modda kurulum yapıyor.
+Tek bir msi dosyası iki kurulum modu. 
+
+* Default olarak çalışacaği port 6516'dır. Desktop modda kurarken kendisi bunu otomatik ayarlıyor.
+Eğer server da kurmuş olsaydık değişecekti.
+	- Bağlantı için : https://localhost:6516
+
+* Gateway'da kurduğumuzda 443 portundan çalışır. Bunun içinde SSL sertifikası yüklenmesini ister.
+	- Bağlantı için : 
+		> Diğer PC'lerden 	   -> https://localhost:443
+		
+		> Kurulu olduğu yerden -> https://ServerAdı.Domain.com:443
+							   -> https://ServerIpAdresi:443
+
+------------------
+
+	WinRM (RM : Remote Managment)
+
+* Windows server core edition kullananların kullandığı uzaktn bağlanma yöntemi
+
+* WAC kurarken bu seçenek geliyor. Bunu seçmemize şimdilik gerek yok.
+
+-------------------
+
+	WIN ADMIN CENTER'A MAKİNA EKLEME
+
+* Buraya ana ekrandan pc'ler ya da server'ları ekleyebiliriz.
+	- Makinaları ip adresleriyle veya makina adıyla da ekleyebiliriz
+		> ip adresi ile eklersek : Makinaların listelendiği yerde ip'sini de görebiliriz
+		> adı ile eklersek 		 : makinaların listelendiği yerde ip'sini göremeyiz
+
+* Eklemek için pek çok yöntemimiz var.
+	- IP'sini gireriz.
+	- Makina adını yazarız.
+	- AD'de arama yapmasını sağlayabiliriz.
+	- csv dosyasına ekelnecek PC'lerimizi yazıp onu yükleyerek tekte yüklenmelerini sağlayabiliriz.
+
+NOT : makina adını yazdığımızda bazen görmeyebilir bu durumda makinaadı.domain.com şeklinde de deneme yapabiliriz.
+
+-------------------
+
+NOT : Türkçe dil desteği mevcuttur.
+
+-------------------

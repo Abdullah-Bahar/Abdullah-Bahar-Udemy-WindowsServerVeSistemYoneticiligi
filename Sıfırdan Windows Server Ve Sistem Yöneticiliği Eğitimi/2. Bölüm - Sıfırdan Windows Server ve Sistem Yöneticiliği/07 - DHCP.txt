@@ -1,0 +1,28 @@
+	
+	DHCP ROLÜ EKLEME
+
+* DC'ımıza DHCP rolünü ekliyoruz.
+	- Sadece "DHCP Server" rölünü seçiyoruz.
+
+* Yükleidkten sonra configüre istiyor bizden
+	- next diyerek burayı da geçiyoruz
+	- birden fazla DHCP varsa ortamda yerkili DHCP olmasını nextliyoruz galiba.
+
+----------
+
+	DHCP YAPILANDIRILMASI
+
+* tools -> DHCP
+
+* DHCP ilk açıldığında boştur. Yeni bir scope/havuz oluturmamız gerekir.
+	- IPv4 sağ tık -> new scope
+	- Hangi ip aralığında dağıtım yapapcağını seçiyoruz
+	- Hangi ip'leri dağıtmamasını seçiyoruz. (belli ip aralığı, tek ip'leri de söyleyebiliriz)
+	- ip'yi atanan pc için kaç gün rezerve etmesi (varsayılan olarak 8 gün bırakılır)
+	- Vermesini istediğimiz DNS sucusu ve Default Gateway adreslerini de yazabiliriz.
+		> Default Gateway
+		> DNS Server
+		> WINS Server (DNS'ten önce kullanılırmış)
+		
+
+

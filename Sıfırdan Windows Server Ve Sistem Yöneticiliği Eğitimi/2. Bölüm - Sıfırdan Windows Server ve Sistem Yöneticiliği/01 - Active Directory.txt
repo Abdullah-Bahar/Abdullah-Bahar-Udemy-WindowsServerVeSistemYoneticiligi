@@ -1,0 +1,234 @@
+
+* Windows Server indirmek için "microsoft evaluation center"ye geliyoruz
+
+* Windows Servr 2016 için 
+	- Standart 		: Bir server/host üzerine 2 tane server kurulmasına izin verir
+	- Data Center 	: Bir server/host üzerine dilediğiniz server kurulmasına izin verir
+
+-------------------
+
+* Server'da IP adresi dinamik olmamalı, static olmalıdır.
+
+* Server'a manuel ip'yi girerken DNS kısmına da manul ip giriyoruz. Server'ımızı Domain Controller'a
+çevireceğimiz için DNS ip'si olarak kendi ip'sini giriyoruz. Alternatif olarak da başka bir DNS sunucusu girilebilir.
+Biz alternatif olarak google'nin DNS sunucusunu girdik "8.8.8.8"
+
+-------------------
+
+* Guest Machine	->	Sanal Makina
+* Host Machine	-> 	Gerçek Makina
+
+-------------------
+
+* Server'lar ilk kurulduğunda açık olan bir özellik vardır > Enhanced Security
+	- Bu özellik güvenlik nedeniyle tarayıcıda gezmeyi kısıtlar. Durmudan sorular sorar. 
+	Bunun olmaması için kapatıyoruz
+
+------------------
+
+	ACTIVE DICECTORY
+
+* Active Directory'e teorik olarak yaklaştığımızda yapılan tanımlamalar :
+	- Dizin hizmetidir
+	- Databasedir
+
+* Active Direktory, kullanıcıların, pc'lerin vb. her şeyin bukunduğu yapıyı (database'i) 
+merkezi olarak yönetmeyi sağlar.
+
+* AD'nin kurulu olduğu makina DC'dir (Domain Controller)
+
+* AD, DC'nin domaini yönetme aracıdır
+
+* AD'nin kurulabilmesi için makinenin server işletim sistemine sahip olması gerekmektedir.
+
+* Bir organizayonda DC sayısı değişebilir. 1'le sınırlı değildir.
+
+
+-----------------
+
+	AD'nin YAPISI
+
+* Fiziksel Yapı : 
+	- Sites : organizasyonun diğer şubeleri "site" olarak geçer (Her site'da bir DC olması gerekmektedir.)
+	- Domain Controllers : Üzerinde AD barıdnıdran server
+	- WAN Links : Site'ları birbirine bağlayan hat
+
+
+* Mantıksal Yapı :
+	- Forest : Organizasyondaki her şeyi, tüm nesneleri temsil eder.	
+	- Domain : AD'yi kurduğumuz andan itibaren oluşturmuş olduğumuz organizasyon bizim domainimizdir
+	- OU (Organizion Unit) : Domein nesnelerini sınıflandırmak için kullanılır
+	- Child : Ana domain altındaki ona bağlı ek domainlerdir
+		> root domain  	-> microsoft.com
+		> child domanin	-> turkiye.microsoft.com
+	- Tree
+
+-----------------
+
+	* AD KURMAK - DC KURMAK
+
+* Server Makinemize Active Directory rolünü ekleyerek Domain Controller yapıyoruz.
+	- Server havuzundan hangi makinaya bu özelliği yükliceğimizi seçiyoruz 
+	- (1 tane server'ımız olduğu için onu seçiyoruz)
+	- Server Manager ekranından AD özelliğini ("Active Directory Domain Services") seçiyoruz. 
+	- Seçenekler arasından seçim yaptıktan sonra yüklenmesini bekliyoruz
+	- bilgisayaı yeniden başlatmasını işaretliyoruz
+	
+	* Sonrası
+	- Yüklemeler gerçekleştikten sonra makinamızı DC yapmak için ilgili konfigürasyonları yapıyoruz
+	- Domain Controller ekliyoruz
+		> Ya var olan domaine bunu ekleriz
+		> Ya var olan bir forrest'a bir domain ekleriz
+		> Ya ilk domanimizi ilk forrest'la birlikte oluştururuz
+	- Sonra Var olan domaindeki makinalar ile iletişimde olabilmesi için ilgli fonksiyonilite seçilir (Domain Fonsiyonel level)
+		> Domainde bulunun server'lardaki en düşün işletim sistemi nedir girilebilir
+		> Eğer domainde server 2008 varsa ve biz server 2016'ı seçersek 2008 olan sürümler ile iletişime geçemez
+	- Sonra DC'ın neler yapabileceğini seçiyoruz
+		> DNS server olması
+		> Global Katalog hizmeti sunması gibi (GC)
+			. NOT : Forrest'ta kurulan ilk domain GC hizmetini vermek zorudnadır
+			. GC Nedir : Forrest içindeki domainler, domainler içindeki tüm objeleri, burada var olan her şeyin bir kataloğu bulunmasıdır.
+			Böylece bir işlem yapamsı gerektiğinde diğer domainlere sorguda bulunması gerekmicek çünkü var ola her şeyi bilmektedir.
+		> Read Only Domain COntroller olması (RDCC)
+			. İlk DC, RDCC olamaz.
+			. Nedir : Bu DC üzeirnde tüm objelerin bulunduğu bir DC yapılandırılıp fakat güvenlik nedeniylr bu DC çalışsın ancak
+			üstündeki hiçbir şeye dokunulamasın. Sadece Read Only olsun. Kimse müdahale edemez.,
+	- Restore Mode şifresi belirlenir
+		> Nedir : Makineye bişey olduğunda Restore Modda açıp makineyi ayağa kaldırmak için bu şifre lazım olacaktır.
+	
+	* Sonrası
+	- DNS Options'ı geçiyoruz 
+		> Uyarı mesajı normal bir mesajdır. DNS kurulacağından bahseder.
+	
+	* Sonrası
+	- Addtional Options
+	- Buradaki NetBIOS'a dokumuyoruz
+		> Nedir : İsim çözümlemesi yapan windows servisidir.
+		> 15 karaktere kadar olan bilgisayar isimlerini çözümler
+		> Artık bilgisayar isim çözümlemelerin bunun yeirne DNS kullanılıyor
+		> Önceden kullanılan bir özellikti ancak geriye uygunluk ğrensibi gereğince hala var.
+		> Gelen ekrana dokunman geçiyoruz
+
+	* Sonrası
+	- Paths
+	- Dosyaların nerede tutulacağı yolları belirlyioruz
+		> AD database'sinin nerede tutulacağı
+		> Log dosyalarının nerede tutulacağı
+		> Group policy ile koyduğumuz yasak ayarları ile ilgili ayarlamaların nerede tutulacağı
+	- Şimdilik bunlara dokunmuyoruz. Default bırakıyoruz
+
+	* Sonrası
+	- Ayarlar ile ilgili önizleme
+
+	* Sonrası 
+	- kurulum için Ayarlamalar yapılıyor
+
+	* Sonrarı
+	- Yükleme yapıyoruz
+
+
+	* Bilgisayar yeniden başladığında otorum açma ekranından -> BAHAR\Administrator
+		- BAHAR -> Domain adı
+		- Administrator -> Kullanıcı adı
+		- NOT : Kullanıcı adı girerken "Domain\KullanıcıAdı" şeklinde olacaktır
+
+	* Oturum açmak için yeni seçenek
+		- KullanıcıAdı@domain (Administrator@bahar.com)
+		- şifre
+
+-----------------
+
+	WORKGRUP/DOMAIN
+
+* Bİr bilgisyar :
+	
+	* Ya WorkGruop'tadır
+		- herkes kendisinin patronudur
+		- ağın genişlemesi sınırlı
+		- bilgisyardaki oturumlar o bilgisayarı bağlar
+
+	* Ya da Domain'dedir
+		- patronluk taslayamaz.
+		- ağı genişletebiliyoruz
+		- Domain'e ekli bir bilgisayra domain'e ekli bir kullanıcı oturum açabilir
+
+----------------
+
+	SERVİCE KAPATMA
+
+* Server manager ekranında sağ üsteki toollardan services'ı seçiyoruz
+* çıkan ekranda ilgili service çift tıklayıp çıkan ekranda "startup type"dan disable yaparız.
+
+-----------------
+
+	AD'YE ERİŞME
+
+* Başlat -> Windows Administrative Tools altında -> Active Directory Users And Computers
+
+* Server manager ekranında -> tools -> Active Directory Users And Computers
+
+----------------
+
+	Active Directory Users And Computers
+
+* Bu ekranda domainde kullanıcılar, DC, Users gibi pek çok şeyi görüntüleyebbiliriz
+
+* USer kısmında users ve group ayrımı isimlendirmenin sonundaki "s" takısından anlaşılır
+
+* Bu ekranda bahar.com altında var olan klasörler OU'tir.
+
+* Bu ekranda users sağ tık -> new -> user seçerek yeni kullanıcı oluşturabiliriz.
+	- isim soyisim gibi yerler doldurulduktan sonra 
+	- User Logon Name kısmına kullanıcı oturum açarken ne yazmalı onu belirtiyoruz
+
+* OU'ları oluşturarak organize bir şekilde AD kulluanılır
+* OU silinmiyorsa 
+	- https://makdos.blog/windows/649/active-directory-de-organization-unit-i-silmek
+
+-----------------
+
+	DELEGASYON
+
+* OU'ları kontrol etmesi için user ataması yapılabilir. 
+	- OU sağ tık -> delegate.. -> Sonrasınını ayarla işte
+
+
+* Konu ile alakalı makale 
+	-  http://woshub.com/delegate-control-active-directory/
+	
+-----------------
+
+	GROUP OLUŞTURMA
+
+* Grup oluştururken iki tane alanımız var :
+
+	* Group Scope
+		- Security (default) : Kullanıcı hakları ve güvenlik izinleri 
+		- Distribution : toplu e posta gönderimi için
+
+	* Group Type
+		- domain local : oluşturukduğu domainin kaynakalrına erişir ve sadece burada gözükebilir
+		- Global (default) : güven ilişki kurulmuş başka domainlerle de iletişimde
+		- universal :
+
+* oluşturulan gruba üye atamak için member seçneğini kullanabiliriz ama çok kullanıcı varsa uzun sürebilir
+* alternatif olarak advanced seçeneğinden lokasyonu belirttiğimiz kullanıları ("find now" ile) getirip 
+oradan ilgilileri seçip ekelyebiliriz.
+
+------------------
+
+	DEFAULT OU'LAR
+
+* bahar.com'un altında "Builten" ve "Users" OU'lerinde default olarak bazı gruplar vardır. 
+* Özel yetkielre sahip bu gruplara, kullanıcı ya da başka bir grubu ekelyerek üye ekleyebiliriz.
+
+------------------
+
+* Domaine'e join etmek istediğimiz windows 10 versiyonlar 
+	- pro, 
+	- enterprice,
+	- Education dur.
+
+* Diğerlerin dahil edemeyiz
+
+--------------------

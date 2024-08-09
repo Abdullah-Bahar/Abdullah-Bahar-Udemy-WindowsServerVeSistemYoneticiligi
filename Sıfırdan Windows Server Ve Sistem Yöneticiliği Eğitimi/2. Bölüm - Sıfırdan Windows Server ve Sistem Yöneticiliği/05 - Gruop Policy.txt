@@ -1,0 +1,182 @@
+	GRUOP POLİCY
+
+* Kullancılara yasakları atayabilir uzaktan yönetimsel işlemleri bunun ile yapabilirsiniz.
+
+---------------
+
+	GRUOP POLİCY MANAGMENT
+
+* Tools'tan buraya eişim sağlayabiliriz.
+
+* GPO : Gruop Policy Object
+
+* Buradan tüm domaini, OU'ları, eğer varsa tüm DC'leri, Site'ları görebilir ve bunların seviyesinde yasak atabiliriz
+NOT : Site -> Fiziksel olarak farklı lokaysonylarda bulunan şubeler. Mesela 81 ilde domainin şubesi varsa
+o zaman 81 tsne site olmuş olur. 
+
+* Yasakları "Group policy Objects"ten tüm policyleri görür ve buradan policy oluşturabiliriz.
+
+* Oluşturduğumuz policy'ler oluşturduğumuz OU'ların altında gözükür.
+
+--------------
+
+	GPO OLUŞTURMA
+
+* Seçenek 1 :
+	* Group policy object tabından sağ tık -> new diyerek GPO oluşturabiliriz.
+		- Daha sonrasımda oluşturduğumuz policy'i bağlam istediğimiz OU'ya sağ tık -> "link an Exis.. GPO"yu seçeriz
+
+* Seçenek 2 :
+	* OU'ya sağ tık GPO oluştur ve buraya bağla... seçilir ve GPO oluşturulur.
+
+--------------
+
+	OLUŞTURULAN GPO'YA YASAK EKLEMEK
+
+* Mimar ve Muhendisler için yerel disklerini görmemesi ve oluşturacağımız ağ diskini görmelerini sağlamak.
+
+* GPO sağ tık -> Edit :
+	- PC'ler için yasak konfigürasyonu yapılabilir
+	- Userlar için yasak konfigürasyonu yapılabilir
+
+* Burada pek çok yasak var ki bunların yolunun akılda tutulması mümkün değil. Onun için genelde yollara google'den bakılır.
+
+---------------
+
+NOT : Policy'lerin geçerli olabilmesi için user ise oturup kapatıp açılmalı, PC ise PC kapatıp açılmalıdır.
+
+* Bazen GPO'lar geç uygulanabilir, bunun için policy tanımlamasından somra cmd'den komut çalıştırabiliriz.
+	- "gpupdate /force"
+	- GPO atamsaından sonra bu komut çalıştırılabilir.
+
+* GPO'larda policy yazarken ip adresi kullanılmaz, onun yerinde PC adı kullanılır.
+
+---------------
+
+	GPO'LARDA MİRAS, ENFORCE, ÖNCELİK
+
+* Domain hiyerarşisindeki OU'lara yasak koyulduğunda alt OU'larda da o yasak geçerli olacaktır.
+
+* Miras almasını engellemek istediğimiz klasöre sağ tık -> block inheritance
+
+* Enforce etmek için policy sağ tık -> Enforce
+	- Enforce : Klasörün altındaki tük klasörlere bu yasağın uygulanması anlamına gelir. Bu yasaktan
+	etkilenmemesi için yapılanları eziğ geçer ve yasağı uygular.
+
+- ünlem işareti varsa miras kladırılmış.
+- kilit işareti varsa enforce edilmiş demektir. 
+
+* Domin'den atana GPO < OU üzerinden GPO < SUB OU	->	GPO'ların öncelik sırası
+* Eğer enforceedilen GPO varsa o hepsinden daha üstündür.
+
+---------------
+
+	GPO'LARDA USER VE GRUOP'LARI AYRIŞTIRMA
+
+* Mesela Ankara için bilgisayarlarını kapatma yasağı verdik ve bazı kullanıcıları bu yasaktan muaf tutmak istiyoruz
+
+* GPO sağ tık -> Delegetion -> sağ alt taraftaki advanced...
+	- o erkanda istediğiimiz user/gruop'u ekledikten sonra alt ksımından polcy'i okuması gibi pek çok farklı izinlerin 
+	bulundduğu yerden "allow gruop policy" seçeneğine deny veriyoruz.
+
+--------------
+
+	GPO'YU DEVRE DIŞI BIRKMA
+
+* GPO tıkla -> üst tabdan details -> GPO Status : burada ilgili seçnekeler vardır.
+
+------------
+
+	BİLGİ
+
+* GPO'ların simgelerindeki yukarı ok aktifse klasörle bağlıdır, pasifse bağlı değildir.
+
+* Policy'i OU'dan sildiğimizde sadece oradan silinir. Yoksa "Gruop Policy Object" kısmından silinmez. 
+Eğer gerçekten silinmesini istiyorsak buradan silmeliyiz.
+
+---------------
+
+	GPOR RAPOR
+
+* GPO sağ tık -> save report
+
+--------------
+
+	SORU
+
+* GPO'nun "Group Policy Objects" sekmesinde ve OU altındaki GPO'da ayarların farklı görünmesi ne anlama gelir ?
+
+--------------
+
+	STARTE GPOs
+
+* GPO'lar için hazır template'ler oluşturma mantığını içeriyor.
+
+* sağ tık -> new ile oluşturulur.
+
+* Her hangi bir GPO'ya nasıl yasak atıyorsak buraya da aynı şekilde yasağı atıyoruz.
+
+* Normal bir GPO oluştururken isim verme barının altındaki "Source Starte GPO" kısmından starter GPO'umu ilgili 
+GPO ile bağlamış oluruz.
+
+---------------
+
+	UZAKTAN YAZILIM YUKLEME
+
+* Normalde program kurmak için dosyaların exe uzantılı vesiyonlarına tıklayarak program kuruyoruz. Ancak burada 
+program kurabilmek için msi uzantılı dosyalara ihtiyacımız var.
+
+* netwokten kurulum için msi uzantılı dosya gereklidir.
+
+* mis uzantılı dosyamızı bir klasöre koyup paylaşıma açmamız gerekiyor.
+
+* Yeni bir GPO oluşturduk :
+	- user config -> software -> Spftware install.. -> ekrana sağ tık -> new package -> 
+	msi uzantılı dosyayı içeren kalsörümüzün network path'i yazarak msi uzantılı dosyamızı seçiyoruz
+	- karşımıza 3 seçeneği olan bir ekran çıkıyor :
+		> Published : user'ın isteğine bağlıdır kurup kurmamak
+			- Control panel -> program and feature -> networkten program yükle bölümünde gözükecektir.
+		> Assigned : user log on olduğunda yüklenir 
+		> Adranced : özelleştirilmiş yükleme seçeneği sunar
+	- Assigmend'i seçtikten sonra new package yaptığımız yere program gelecektir. Burada sağ tık -> özellikler ->
+	Deployment -> "install this..."'i tikledik sonrasında alt tarafta bulunan kısımdan basci'i işaretleyip okeyledik
+
+* Network pathini yazarken windowsta küçük/büyük harf duyarlılığı yoktur (kaydı vifaki).
+
+---------------
+
+	FOLDER REDIRECTION (Klasör Yönlendirmesi)
+
+* User'a ait bazı klasörleri local'de değil de serverda tutmaktır.
+* Böylece kullanıcının pc'sine bakıp yapılmasına gerek kalmaz. Sunucu da tutulduğu için user dataları da güncellenecektir.
+Yedeklenmesi, anti virsu koruması vb. işlemler.
+
+* Mesela users kısmının altında kullanıcı profilleri olur. Bunlar server'da tutulabilir.
+* Profil bilgilerini dosya sunucusunda tutmak istiyoruz.
+
+* İlgili OU'nun altında GPO oluşturduk
+	- User COnfig.. -> Wİndows Setting -> Folder Redirection -> 
+	Çıkan ekranda hangi klasörün yönlendirilmek istersen onu seçip sağ tık -> proporties ->
+	target tabından -> Settings'i "basic...."yı seçiyoruz -> alt tarafta root path'a network yolunu giriyoruz.
+		> Basic : Tüm user bilgileri tek klasörde tutulur.
+		> Advenced : User bilgileri farklı klasörlerde tutulur.
+	- Setting tabında -> 
+		"Grant the user..." tabından tiki kaldırdık, (admin olrak redirection yapılan klasöre erişmek için) 
+		"Also apply..." tabına tik attık (ortamdaki eski sürümlere de geçerli olması için)
+	
+* User ile oturum açıp kapatığ tekrar açtığımızda redirection işlemlerini daha iyi gözlemleyeceğizdir.
+
+---------------
+
+	GPO DESKTOP AYARLAMASI
+
+* user config -> Policies -> Desktop -> Desktop -> Desktop Wallpaper
+	- Enable yapıyoruz, ayrıca duvar kağıdı yapmak istediğimiz dosyayı ağ da paylaşıp network path'ini girmemiz gerekiyor.
+
+* Kullanıcının arka planı değiştiremmesini de ayarladık
+
+---------------
+
+	DEFAULT GPO
+
+* Domain'de etkili olan Defaut GPO'dan komplek şifre ayarını kaldırdık.

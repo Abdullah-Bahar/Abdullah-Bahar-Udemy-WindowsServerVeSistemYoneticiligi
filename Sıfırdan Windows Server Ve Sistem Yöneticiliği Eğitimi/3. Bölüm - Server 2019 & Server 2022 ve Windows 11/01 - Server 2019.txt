@@ -1,0 +1,28 @@
+
+	DC İSİMLENDİRME
+
+NOT : Server isimlendirmelrinde verilen isimler makinayı hedef göstertecek şekilde olmamalı. 
+Mesela Domain Controller görevi yapan server'a DC ismini vermek hacker'lara hedef gösterir.
+
+	AD KURULUM İÇİN
+
+NOT : Server'a AD kurulumu yapmadan önce Server'ın DNS adrsini girmeliyiz. Aksi takdirde kurulum tamamlanmaz.
+
+------------------
+
+	NIC TEAMING
+
+* Server Manager'ın local server kısmında gözüken ayar
+
+* Sistemde birden fazla network kartı bulunduğu zaman kullanılabilir. Böylece network trafiği dengelenmiş ve
+olası ethernet kartı bozulması durumunda diğer ethernet kartından çalışmaya devam edebilir.
+
+------------------
+
+	WINDOWS ADMIN CENTER
+
+* Server 2019 ile birlikte gelen en önemli yenilik.
+
+* Windows 2019 ile birlikte "Windows Admin Center" geldi.
+
+-----------------

@@ -1,0 +1,22 @@
+
+* Uzak Masaüstü Açma
+ 	- windows + r
+	- mstsc 
+
+* Bir bilgisayardaki kullanıcıları görmek için :
+	- başlat butonuna sağ tık yapıp "Bilgisayar yönetimi" seçeneğini seçiyoruz
+	- açılan ekranda "yerel kullanıcılar ve grup..." seçeneğinin altında bulunuyor
+	
+	Not : oradaki kullanıcıların simgelerinde aşağı doğru ok varsa aktif değillerdir
+
+* Uzak masaüstü ile bağlanmayı denediğimizde bağlanmak istediğimiz bilgisayarın kullanıcılarından biri ile giriş yaparız
+* Giriş yaptığımızda oturumu açık olanların oturumu sonlandırılır.
+
+* Aynı ağda olmadığın bir cihaza uzak masüstü yapmak için uzak masaüstü yapıalcak bilgisayarın 
+bağlı oldduğu modem üzerinden port forwarding aytarlamalarının yapılması gerekmektedir.
+
+* Modemin dış bacağının ip'si static olmayabilir. Public İp üyeliği yoksa gün ve gün bu ip değişebilir.
+
+* Uzak masaüstü bağlantısı şifre olmayan cihazlara giriş yapıalmıyor. Windowsun güvenlik için yaptığı işlem bu. 
+
+* Ancak Team Vİewer gibi app'lar kullanılabilir ve böylece daha kolay olabilir.

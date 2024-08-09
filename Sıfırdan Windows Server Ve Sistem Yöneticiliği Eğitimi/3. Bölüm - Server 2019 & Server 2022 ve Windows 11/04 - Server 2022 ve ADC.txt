@@ -1,0 +1,63 @@
+	SERVER 2022
+
+* Kurulum ekranları standartlaştılımış olduğundan dolayı kurulumu diğer server'lardan pek farklı değil.
+
+----------------
+
+	ADDIOTIONAL DOMAIN CONTROLLER (Yedek DC) - (ADC)
+
+* Addiotional DC : DC üzerindeki her şeyin paylaştırılması için kurulan yedek  bir server'dır.
+	- Ana DC'nin database'sini üzerinde yedek olarak tutar.
+	- Yük paylaşımı ve dengelenmesini de yapabiliyor.
+	- Ana DC'ye erişim kesildiğinde hizmet aksaması olmadan full kapasite devreye giriyor.
+
+---------------
+
+	ADC KURULUM
+
+* Server'a AD rolü ekler gibi bu rolü ekliyoruz. Asıl farklılık, rölü ekledikten sonra promote ederken
+ortaya çıkacaktır.
+
+
+* Promote ekranı :
+	- Var olan domaine yeni bir DC eklemeyi işaretliyoruz.
+
+	- DC'nin neler yapavağını seçiyoruz
+		> DNS hizmeti versi
+		> Global Catalog hizmeti versin
+			- Global Catalog (GC) : AD'de forrest'ın içerisindeki her objeyi içerisinde barındıran database'dir.
+		> Read Only DC seçeneğini seçmedik
+			- RODC : Okululabilir bir DC. Yani ana DC çökütğünde vs. bu çalışır yükü üslenir ama yeni kullanıcı gibi şeyler oluşturamaz.
+
+
+	- Addional Options Ekranı : (Daha önce görmediğimiz bir ekran)
+		> DC'lar aralarında replike olacak. Bunun için bu DC'nin replikesini nereden alacağını seçiyoruz.
+		Ana domainimizi seçtik.
+		NOT : Eğer domainde birden fazla DC varken bunu yapıyorsak seçeneğimizi "Any Domain Controller" olarak bırakmalıyız.
+
+	- Geri kalanlar bildiğimiz gibi. 
+
+---------------
+
+	ADC KURULUM SONRASI
+
+* ADC kurduğumuz makinanın DNS adresini kurulumdan sonra kendisi olacak şekilde değiştiriyoruz. Bundan önce ana DC'nin 
+ip adresi DNS olarak vardı. Ana makinanın ip'sini alternatif DNS kısmına giriyoruz
+
+* DC'ye de DNS için alternatif olarak ADC'nin ipsini giriyoeuz. 
+
+---------------
+
+	ADC VAR MI NASIL ÖĞRENERİZ ?
+
+* Users and computers'den Domain controllers'lara geldiğimizde birden fazla makina gözüküyor ise domainimizin yedekli
+çalıştığını anlamış olaruz.
+
+* ADC kurduktan sonra doğrulamak için de burası kontrol edilebilir.
+
+--------------
+
+* NOT : DC'ler arasındaki replikasyon işlemi network trafiğine bağlı olarak 15 dk ile 180 dk arasında değişmektedir.
+
+-------------
+

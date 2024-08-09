@@ -1,0 +1,173 @@
+
+
+* Dosya paylaşmak için yeni bir server kurup domaine onu ekledik (File Server).
+Paylaşmak istediğimiz dosyaları burada oluşturuyoruz.
+
+--------------------
+
+	DOMAİNDE DOSYTA PAYLAŞMA
+
+NOT : Dosya paylaştırılmaz, klasör paylaştırılır.
+
+* Klasör sağ tık -> Sharing -> advanced sharing -> "share this folder" tikliyoruz
+* bu ekranda :
+	- paylaşım isimini
+	- aynı anda kaç kişiyle paylaşılacapı
+	- permission'dan "eveyone"a "full control" veriyoruz
+
+--------------------
+
+	DOMAİN KULLANICISI BU KAYNAĞA NASIL ERİŞECEK
+
+* Windows run -> Filer server ip adresi
+	- Dosya gözüküyor ama erişim yok
+
+	DOSYA İZİNLERİ / PAYLAŞIMDAKİ GÜVENLİK AÇIKLARINI KAPATMAK
+
+* Klasör sağ tık -> Security -> Edit -> Add
+
+* kullanıcıyı ekledikten sonra verdiğimiz izinlere paylaşılan dosyalar üzerinde izinleri
+doğrultusunda bir şeyler yapabilir.
+	- Bu izinler normal bir kullanıcıya en fazla "modfy" yetkisi verilmeli
+	- "Full Control" yetkisi sadece adminlerde olmalı. 
+	Bu yetki verilmiş kimse bu klasöre erişimi olmaması gereken başkalarınına da erişmesini sağlayabilir.
+
+--------------------
+
+	FİLE SERVER'DAKİ PAYLAŞILAN DOSYALARI GÖRME
+
+*  Bilgisayar Managment -> Shared Folders -> Shares -> Dosyaları görebilirsin
+	- Yanında dolar işareti olan dosyalar "gizli paylaşım" demektir
+
+* Shared Folders ekranındaki Sessions altında paylaşılan dosyalara erişimde bulunan kullanıcıları görürsünüz.
+
+-------------------
+
+	KAYNAK PAYLAŞIMINDAKİ YETKİ ÇAKIŞMALARI
+
+* İzinler user ve group'lara verilir. 
+
+* Bazı kullanıclar birden fazla gruba dail olması gerekebilir. Bu gibi durumlarda verilen etkinin
+kullanıcı üzerinde oluşturacağı etki hesaplanmalıdır.
+
+* Eğer bir kullacnının üye olduğu gruplardan birisinin izinleri kısıtlı diğerininkisi de yüksekse kullanıcıyı 
+hangisi baplar ?
+	- Kullanıcı birden fazla gruba üyeyse en yüksek izni alır.
+
+* Kullanıcı izin durumunda en yüksek izni alırken yasak durumunda da en yüksek yasağı yer
+
+* Eğer bir kullanıcı birden fazla gruba üyeyse ve neticede hangi izinlere sahip olduğunu bilmek istiyorsak
+	- Klasör sağ tık -> security -> advenced -> Effective Acces ->
+	user ve gruop kısmına user'ı ve ekli olduğu group'ları giriyoruz ->
+	view Effective access'e tıklayıp detayları görebiliriz.
+
+-------------------
+
+	PERMISSIONS
+
+* NTFS permission 
+	- Klasörde security bölümündeki izinler
+	- Drive üzerindeki izinlerdir
+
+* Share Permission
+	- Klasörde Sharing bölümündeki izinler
+
+* Bu iki izin çakıştığında en az izne sahip olan kazanır.
+* Biz de sharing'den ful control verip denetlemeyi security'den veririz. (Alışkanlık)
+
+------------------
+
+	GİZLİ PAYLAŞIM
+
+* Dolar işareti gizli paylaşımları temsil eder.
+
+* O dosyaya erişmek için :
+	- \\192.168.1.201\dosyaAdı$
+	(ip yerine server'ın adını da yazabiliriz)
+
+* Ozel oalrak paylasacağımız dosyayı özel yapmak için
+	- Klasör sağ tık -> Sharing > advanced -> 
+	Sharing Name'in sonuna '$' işareti koyarsak özel dosya olur.
+
+------------------
+
+	PC'NİN DİSKİNE ERİŞME (C/D SÜRÜCÜSÜ)
+
+* Başka bir PC'nin sürücüsüne erişmek için domain admin ya da domain admin grubunda olmak gerekir.
+
+* \\192.168.1.201\C$ -> Bu şekilde erişeceğizdir
+	- C diski özel paylaşım olsuğundan dolayı '$' işareti ile erişiyoruz
+
+NOT : Eğer daha önce o pc'den bir paylaşım yapılmayan bir bilgisayar varsa onun c'sine erişemeyiz. 
+* C'sine erişmek istediğimiz bir bilgisayarın paylaşım geçmişi olmak zorunda.
+
+(Yönetimsel paylaşımlar)
+* Bilgisayarlar da default paylaşım klasörleri : (Bilgisayarlar her açıldığında bu klasörleri paylaşım açar)
+	- C$		-> C sürücüsü (başka sürücü varsa onlarda olabilir)
+	- ADMIN$	-> C sürücüsünün altındaki windows'ta
+	- OPC$		-> Bilmiyorum ???
+
+
+	PEKİ BÖYLE BİR ERİŞİMİ KENDİ PC'İMİZE NASIL ENGELLERİZ
+
+* Bilgisayarı açtıktan sonra bu paylaşımları gördüğümüz ekrana gelip sağ tık paylaşımı durdur demek kafidir.
+Unutulmamalı ki pc her açıldığında bu işlemi yapmak gerekir. 
+
+-----------------
+
+	INHERITANCE
+
+* Yukarıdan atanan izin alt klasörleri de etkiler.
+
+* Bir klasör içinde ilgili A, B, C şeflikleri için A, B, C klasörleri oluşturduk.
+	
+	* Örnek : 
+		- Sirket Data
+			- A
+			- B
+			- C
+			- ...
+
+* Ana klasör için :
+* Sharing kısmından eveyone'a full control verdik.
+* Security kısmında da eveyone'a list'leme izni verdik.
+	- Bu şekilde klasörün içindeki tüm klasörler listelendi. Bunu istemiyoruz. Üst klasörün iznini miras olarak aldı.
+	Mesela A şefliği B klasörüne erişemesin.  
+
+* Üst klasörden Miras almaması için :
+	Security -> Advanced -> Disable Inheritance -> çıkan ekranda :
+		> ya verilmiş izinler değiştirilebilir hale gelir. (Miras alması durumunda bu değiştiremiyorduk)
+		> ya da izin verilen kullanıcıların tümü kaldırılır.
+
+* İzinleri değiştirmeyi seçtik
+	- o alt klasörden everyone iznini kaldırıp o klasöre erişmesini istediğimiz grubu seçtik.
+	- o alt klasör içerisindeki klasörlerden bazısına, o klasöre erişen grup içerisinden erişmesini istemediğimi userlar varsa
+	onları da o klasörde teker teker seçip ful deny veririz.
+
+------------
+
+	NETWORK DRİVE
+
+* Bu durumda durmadan run yapıp ilgili makinanın ip'sini girmeye gerek kalmaz. 
+C sürücüsü gibi ağda var olan bir sürücü oluşturuz. Böylece erişim noktasında daha kolay bir erişim söz konusu olur. 
+
+* Nasıl oluşturulur :
+	- Host cihazda dosya gezgini -> Ağ -> Sağ tık -> ağ sürücüsüne baplan ekranı"
+	- sürücü harfi belirle ve paylaşılması istenen klasörün network yolunu belirle
+	
+* network yolu nasıl belirlenir ?
+	- Paylaştırılmak istenen klasörün sharing tabunda "network path" altında bu yol mevcuttur.
+	- ya da ağ sürücüsüne bağlan ekranında "\\ipAdresi" yazıp bağlantıyı gerçekleştirdiğimizde göz atarak 
+	istediğimiz klasörü seçebiliriz.
+
+* klasörü seötikten sonra ilgili kullanıcının oturum açtığında bu network bağlantısının gerçekleşmesi için 
+"oturum açıldığında yeniden bağlan" seçneğini seçebiliriz.
+
+* network sürücüsünü kullanmanın avantajı normal kullanıcıları ip adresleri ile uğraştırmamış oluyoruz.
+
+* ağ sürücüsüne sağ tıklayıp bağlantıyı kesebiliriz.
+
+* Ağ sürücüsü ile paylaştırmak istediğimiz klasörün mutlaka ağda paylaştırılmış olması gerekmektedir.
+paylaştırılmamış kaynaklar ağ sürücüsüne baplanamaz
+
+-------------

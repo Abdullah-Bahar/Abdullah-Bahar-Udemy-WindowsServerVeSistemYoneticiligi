@@ -1,0 +1,51 @@
+
+	WINDOWS 11
+
+* Windows 11 kurarken bize bir tuşa basmamızı söyledği o ilk ekrand a tuşa basmayı unutmamamız lazım.
+
+* Kurulum ekranı Win 11'den farklı
+
+* Gereksinimleri Win 11'den fazla
+
+* Bazı ayarlamalar sonucunda .apk uzantılı dosyalara çalışıtırılabilir (Android app'ları)
+
+* Kurulum ekranındaki microsoft hesabını girme ekranını internet bağlantısını keserek atlayabilirsiniz
+
+----------------
+
+	NETWORK & INTERNET EKRANI
+
+* Buradaki "network profile type" :
+	- Public : PC'nin netorkte görünmemesini sağlar
+		> Ev ortamında bu seçilebilir
+	- Private : PC'nin networkte görünmesini sağlar
+		> Yaşayan bir netwokt ortamında bir yerden başka bir yere baplanmak istendiği için bu seçilebilir
+
+* "Authentication Settings" : IEEE 802.1x
+	- "Çeşitli güvenlik ayarları mevcut
+	- Ağa hangi cihazın hangi adla gireceği vs.
+	- Port tabanlı ağ erişim denetimlerinde bu alan kullanılabiliryor
+
+	> Bu şekildeki yetkinlendirme işlemini yapan sunuculara "RADIUS Server" denir.
+
+
+* "Metered Connection"
+	- Seçilen ethernet kartı üzeridnen akan network tarfiğini limitleyebiliyoruz
+
+----------------
+
+	DNS OVER HTTPS
+
+* PC'ye ip atama ekranında karşımıza çıkıyor.
+
+* Şifreli DNS denilebilir. 
+
+* Bir web sitesine girdiğimizde karşımıza DNS server'ına gidip oradan web sitesine gitme işlemi yapıyoruz.
+Ancak bu durum şifreli bir şekilde gerçekleşmediği için nereye gitmek istediğimiz başkaları tarafından öğrenilebilir.
+Bunun önüne geçmek için bu özellik enable yapılabilir. 
+	- Ayrıca bu şifreleme/kapsüllemeyi yapan bazı şirketler var. Eğer DNS ayarlarında o şirketlerin DNS IP'leri girilirse
+	o şirketler otomatik gizleme yapacağından dolayı ekstra bir gizlilik sağlanmış olur. 
+		> Google		:	8.8.8.8
+		> Cloudflare	:	1.1.1.1
+	
+---------------

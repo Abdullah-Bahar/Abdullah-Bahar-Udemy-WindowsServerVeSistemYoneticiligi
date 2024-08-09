@@ -1,0 +1,9 @@
+* Sunucu işletim kurma
+* Domein COntroller Kurma
+* Sunucuya rol ekleme
+* AD kurma
+* User yaratma, user işlemleri
+* Kaynak paylaşımı, Yetki verme
+* GPO yaratma
+* Yerel hesap ile Domain Hesap farkı
+* ip adresleme

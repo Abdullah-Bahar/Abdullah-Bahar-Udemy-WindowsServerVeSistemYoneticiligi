@@ -1,0 +1,125 @@
+
+	DOMAINE PC EKLEME
+
+* Domaine eklemek istediğimiz bilgisayarın kurulumunu yaparken kurulum ekranındaki seçenekler :
+	- Kişisel Kullanıma Yönelik Ayarlama
+	- Kuruluşlara yönelik ayarlama (Bu seçilmelidir yoksa domaine ekleyemyiz)
+
+* PC ile DC arasındaki iletişimin gerçekleşmesi için aynı network'te olmaları gerekmektedir
+
+* PC'nin Domaine eklenemsi için DNS'in ipsine ihtiyacı var. DNS'i DC yapmıştık, 
+öyleyse DNS ip'sini DC ipsi giriyoruz.
+
+* Sonrası Domaine Join etme işlemi
+
+* Bu bilgisyara -> özellikler -> Bilgisayar adı kısmının altında değiştir seçeneği -> 
+çıkan ekranda domain'i seçip ilggili somain adını yazıyoruz (bahar.com)
+	- Açılan kullanıcı adı ve şifre ekranı için
+		> kullanıcı Domain Admin olmak zorunda domain admin passwordu kullanılmak zorunda
+		> AD'deki herhangi bir kullanıcı, domain'e 10 bilgisayara kadar pc'yi domaine join edebilir
+		(daha hiç oturum açmamış bir kullanıcı ise yapamaz. Daha önce oturum açmış olması gerekmektedir)
+
+--------------------------
+
+	DOMAINE PC EKLEME PROBLEMİ
+
+* Eğer bağlanma sorunu varsa ip'ler kontrol edilmelidir. PC'leer birbirlerini görüyor mu ? Ping denemesi yapılmalı. 
+DNS ayarları kontrol edilmeli. 
+
+* Doğruluğunu bilmiyorum ama AD DC ile bağlantı kurulamadı hatası alındığında hatanın sebebi olarak şöyle bir cevap var :
+	- "Domain adresiniz daha önce alınmayan bir adres olması gerekiyor 
+	bunu da verdiğiniz domaini internet tarayıcınızda yazıp kullanılıp kullanılmadığını kontrol edin ve domaininizi 
+	ona göre AD'ye verin."
+	- Hata alıyordum ve bunu denedim. Modemin internet ayağını kesip bağlanamyı denedim oldu. İnternette arama yapmasın diye.
+
+--------------------------
+
+	YEREL KULLANICI
+		- Hesapların oluşturulduğu PC'lerde oturum açabilirler
+		- Sadec o PC'deki kaynaklara erişim sağlayabilirler,
+		- Sadece Workgroup ağ yapısı içerisinde kullanılırlar
+		> Workgroup : Atnı networkten ip almış ve herkesin kendi PC'sinin patronu olduğu ortamlardır.
+		- Bu kullanıcılar o PC'de bulunur
+
+	DOMAİN KULLANICILARI
+		- Domaine eklenmiş PC'lerde oturum açılabilir
+		- Domaindeki kaynaklara erişebilir (izinlere ölçüsünde oluyor)
+		- Domain ağ yapısı üzerinde kullanırlar
+		- Bu kullanıcılar AD'de bulunur
+
+* Domaindeki PC'lerde Yerel kullanıcı hesapları pc'de arka planda duruyor. PC'ye bir şey yüklenemsi gerektiğinde kullanılıyor.
+Domain kullanıcılarına bu hesaplar söylenmez. IT görevlisi bilir bunu.
+
+* Domain kullanıcıları yerel PC'ler üzerinde değişiklik yapmaya hakkı yoktur.
+
+* Yerel ve domain kullanıcılarının olduğu PC'de 
+	- Domain kullanıcısı için 	: "DomainAdı\KullanıcıAdı" veya "kullanıcıAdı@domainAdı"
+	- Yerel kullanıcı için 		: "PCAdı\KullanıcıAdı" veya ".\KullanıcıAdı" 
+
+* Domaine ekli PC'nin Adminleri :
+	- Yerel kullanıcı
+	- Domain Adminleri
+	- Domain adminleri tarafından domain kullanıcıları da bu PC'ye admin yapılabilir
+
+* Pc'ye domain kullanıcısını admin yapmak için admin olarak eklemeye çalıştığımızda şifre sorar.
+Ancak yerel kullancı ile bunu yaprsak şifre sorar. Aksi takdir de admin olmayan domain kullanıcısı ile 
+yaptığımızda erişim reddeidldi diyip engeller
+
+--------------------
+
+	USER'A LOGON YASAĞI
+
+* Domain User'ını belirli PC'lere Log on yapmak için 
+user'a tıklayıp -> account -> Log on to... -> the fallowing computers seçip
+add diyip girebileceği bilgisayarların adını giriyoruz. 
+* Sonuç olarak bunlar dışındaki PC'lere giremez.
+
+-------------------
+
+	ŞİFRE SIFIRLAMA ve KİLİT AÇMA
+
+* User sağtık -> reset password
+
+* Eğer fazla kullanıcı varsa klasör içinde sağ tık -> tüm domainde ara -> kullanıcı adı  ara -> 
+gelen kullanıcı sağ tık -> reset password
+
+* Eğer kullanıcı daha çok fazla deneme yapıp hesabını kitlediyse resetleme ekranında 
+"unlock the user account" seçeneğine tik atarsak hesabın kilidi açılacaktır. 
+
+* şifre değiştirmeden kiilidi açmak için 
+user'a tıkla -> account -> unlock account seçip okeyleriz
+
+---------------------
+
+	USER OTURUM AÇMA SAATLERİNİ DEĞİŞTİRME
+
+* User sağ tık -> Account -> Logon Hours.. seçip saat ve gün ayarlamaları yapılır
+
+-------------------
+
+	GEÇİCİ USER ACCOUN AÇMA
+
+* User sağ tık -> Account -> Account Expires'in altında "End of" seçeneğinden
+son kullanma tarihi belirlenir.
+
+------------------
+
+	DOMAIN USER DEVRE DIŞI BIRAKMA
+
+* Kullanılmayan user hesapları hemen silinmeden önce belli bir süre devre dılı bırakılır.
+IT'ciler o hesapları heen silmezler
+
+* User sağ tık -> Account option altında -> "Acoount is disable"
+
+* User devre dışı olduğunda yanıda gözüken simgede aşağı bakan ok olur. Bu disable anlamına gelir 
+
+* Açam işlemi içinde tik attığımız yerden tik ikaldırıyoruz
+
+------------------
+
+* Domain adminler makinların aynı zamanda local adminleri olurlar. Ancak domainde çok falzla PC varsa ve 
+PC'lere bir şeyler yapmak istendiğinde local kullanıcılar ile bunları yapmak yorucu olabilir. Bunun için 
+local kullanıcı gibi o PC'de Administrator olacak yeni bir user oluşturup bununlar o PC'lerde bu işlemi 
+gerçekleştiririz.
+
+------------------

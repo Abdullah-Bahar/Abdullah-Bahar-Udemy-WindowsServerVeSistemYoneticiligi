@@ -1,0 +1,189 @@
+
+	IP ADRESS
+
+* IP Adres kuralları : (192.168.1.220)
+	- Hiç bir oktet 255 değerini aşamaz
+	- Hiç bir ip adresi 0 ile bitmez
+	- Hiç bir ip adresi 255 ile bitmez
+
+-------------------------
+
+	IP CLASS
+
+* IP Adres Sınıfları :  (ilk oktet için)
+	- A Class : 0 - 127 
+	- B Class : 128 - 191do
+	- C Class : 192 - 223
+	- D Class : 224 - 239 (Başka amaçlar için kullanılıyor)
+	- E Class : 240 - 255 (Başka amaçlar için kullanılıyor)
+
+* Bilgisayarların iletişme geçebilmeleri için aynı class'ta bulunan ip'lere sahip olmalıdırlar.
+
+-------------------------
+
+	NETWORK ID
+
+* Bilgisyarın birbirleriyle iletişim kurabilmeleri için aynı ağda olmaları gerekmektedir.
+* Aynı ağda olmaları da network id'lerinin de aynı olması anlamına gelir.
+
+* network id'lerinin eşit olması için
+	- A Class : 1. oktet eşit olmalıdırlar
+	- B Class : 1. ve 2. Oktetler eşit olmalıdırlar
+	- C Class : 1. , 2. ve 3. Oktetler eşit olmalaıdır
+
+* İp adreslerinin 2 bölümü vardır : 
+	- Network Id 	: Hangi networkte olduğu belirler
+	- Host Id		: Hangi bilgisayar olduğunu belirler
+
+* Örnek : 
+	- 192.168.1.76 IP'si için -> Network Id : 192.168.1.0
+	- 172.16.10.15 IP'si için -> Network Id : 172.16.0.0
+	- 10.34.100.23 IP'si için -> Network Id : 10.0.0.0
+
+------------------------
+
+	PUBLIC-PRİVATE IP
+
+* Her bilgisayarın eşsiz bir ip'si olmak zorundadır. Aksi takdirde "IP çakışması" olacaktır.
+
+* IPv4 için yaklaşık olarak 4 milyon IP mevcut.
+* Peki bu 4 milyon ile sınırlı ip nasıl tüm dünyadaki cihazların ihiyacın karşılar ?
+
+* Bu sınırlı sayıda olan ip havuzuna çözüm olmak için NAT protokolü kullanılmaktadır.
+* Böylece IP'ler ikiye ayrılır :
+	- Public 
+		> Dış ip'ler
+		> ISP'ler tarafından internete çıkmak için kullanılan ip adresi.
+	- Private
+		> İç ip'ler
+		> İnternette kullanılmayan sadece içeride kullanılmak için rezerve edilen ip'ler kullanılmaktadır.
+
+-----------------------
+
+	DEFAULT GATEWAY - LOOPBACK ADRESS
+
+* Defaul Gatewat : Bir bilgisayarın, kendi neteorkünden başka bir neteorke çıkmak için kullanılan kapıdır.
+
+* Loopback Adres : 127.0.0.1 
+	- Ethenet kartlarını test etmek için kullanılır
+	- Fiziksel olarak hat düzergahını kontrol etmek için kullanılır
+
+----------------------
+
+	APIPA
+
+*  Bilgiisyar DHCP'den veya manuel oalrak IP almadıysa bilgisyarın kendine atadığı
+IP'ye APIPA nedir.
+	- 169.254.0.0 networkünden atanır.
+
+----------------------
+
+ * SUBNET MUSK
+	- IP'nin hangi network'e bağlı olduğunu anlamamızı sağlar
+
+----------------------
+
+	BAĞLANTI SORUNLARI
+
+* Ping attıktan sonra gelen cevapları hangi anlamlara geliyor ?
+
+* Bağlantı Sournları (ping attıktan sonra cevap gelmiyorsa)
+	- Bilgisayar kapalıdır
+	- Ethernet kablosu çıkmıştır
+	- Farklı networktedir
+	- Firewall
+	- Ethernet kartı disable'dir
+	- Ehernet kartı ortamda DHCP server'ı yokken DHCP'den ip almaya çalışıyorsa APIPA'ya düşebilir
+
+---------------------
+
+	MAC ADRESS
+
+* Bilgisayarlarda ip adresleri bulunduğu gibi MAC adresleri de bulunur.
+* İp'ler değişebilir ancak MAC adresleri değişemez.
+* MAC adresleri ethernet kartını temsil eder.
+* Değişmez, 48 bitlik bir adrestir.
+
+* Benzetme : Arabalarda
+	- Plaka, ip aadresi gibidir yani değişebilir.
+	- Şase numarası, MAC adresi gibidir yani değişemez.
+
+---------------------
+
+* Sanal bilgisayar internete çıkarken kenid ethernet kartını kullnaır. Böylece bir suç işlendiğinde
+o sanal makina silindiğinde takip işlemi modem lokasyona kadar gelir ama hangi bilgisayarın işlediği bulunamaz.
+
+* Bu noktada "wireless usb ethernet adapter" de kullanılabilir. Kullan at ethernet.
+
+---------------------
+
+- SORU : Sanal bilgisayar kendi MAC adresi ile internete çıkıyorsa, bu bilgisayar ile bir suç işleyip, 
+daha sonra bilgisayarımızdan sanal bilgisayarı kaldırdığımızda, takibi yapılabilir mi? Aynı modemden 
+ip alan bir çok bilgisayar olduğunu varsaydığımızda, hangi bilgisayarda sanal bilgisayar oluşturulduğunu 
+nasıl tespit ediyorlar?
+
+- CEVAP : Bu soruyu soran cok kisi var. sanal bilgisayari kaldirirsan takip islemi modemden lokasyona kadar gelir 
+ama bilgisayari tespit edemez.
+
+---------------------
+
+	SORULAR
+
+* Wan IP ve Public Ip farkı ?
+* ISP, tek public ip'den çok sayıda yönlendirme yapabilir mi ?
+	- bu durumda port yönlendirme için static IP almadan yabılabilir mi ?
+
+* Bİlgisyardaki MAC adresini değiştirmek suç işlendiğinde bulunmamanı sağlar mı ?
+
+--------------------
+
+	DOSYA PAYLAŞIMI
+
+* Aynı ağda bulunan cihazların birbirleri ile dosya paylaşımı
+
+* Klasöre paylaşım izni verme :
+	- Klasöre sağ tık özellikler -> paylaşıom -> gelişmiş paylaşım... -> Bu klasörü paylaş tikini işaretliyoruz 
+	- Aynı ekranda izinler kısmından tam denetimi işaretliyoruz.
+
+* Windows + r yapıp
+	- "\\<ip adress>" (bizimle dosyayı paylaşacak olan pc'nin ip'si)
+	- daha sonra hedef pc'ninin oturum bilgilerini girdiğimizde bağlantı gerçekleşir
+
+* Eğer dosyayı paylaşırken oturum açılması gerektiği için kendi oturum bilgilerimizi vermek istemeyebiliriz.
+Bu durumda Bilgisayar Yönetiminden yeni bir kullanıcı oluşturabilirz. Dosyayı paylaştığımız kişinin bunu 
+erişmesi için yeni oluşturduğumuz kullanıcı bilgileri kullanarak giriş yapabilir.
+* Ancak budurmda da izin yetkisi sınırlı olabilir (klasörü açma, silme vs. ). 
+Bu durumda izinleri ayarlamak için :
+	- Klasör sağ tık -> özellikler -> güvenlik
+	- "Grup ya da kullanıcı adlar" kısmının altıdaki "düzenle" seçeneğine tıklıyoruz
+	- Açılan ekran ekle değiştirebiliyoruz
+	- Açılan ekrandaki "Seçilecek nesne adlarını girin" kısmına yeni oluşturduğumuz kullanıcı adını yazıp "Adları denetle"ye tıklıyoruz
+	- Sonrasında tamamm'a tıklayıp kullanıcıyı eklemiş oluyoruz
+	- tamam dedikten sonra bir önceki pencereye geliyoruz. 
+	- Kullanıcıların gözüktüğü bu ekranda eklediğimiz kullanıcının izinlerini aşağı taraftan değiştirebiliriz.
+	- İzinlerin bulunduğu kısımdan dilediğiniz izinleri verebilir ya da kaldırabilirsiniz.
+
+	Kısaca :
+	- yeni kullanıcı oluşturuyoruz
+	- bu kullanıcıyı dosya'yaya erişebilen kullanıcıların arasında ekliyoruz
+	- izinlerini ayarlıyoruz
+
+------------------
+
+	CIDR
+
+* 192.168.1.100\24
+	- 24 sayısı CIDR sayısını ifade eder.
+	- subnet musk'ını gösterir.
+	- 32 bitlik ip'nin ilk 24 tanasinin 1 olduğunu gösterir.
+	- buna göre subnet musk'ı bulabiliriz.
+	- Subnet musk : 11111111.11111111.11111111.00000000 -> 255.255.255.0 
+
+
+* CIDR değeri :
+	- \24 : C class
+	- \16 : B class
+	- \8  : A Class
+
+	* Bunlar standart subnet musk'tır.
+	* Bunlar dışında kalan değerle varsa "SUBNETİNG" söz konusudur.

@@ -1,0 +1,168 @@
+
+	SERVER YÖNETİM PANELİNE BİR ÜYE SUNUCU EKLEME
+
+* File Server'ımızı DC'lırın yönetim paneline ekelyerek uzaktan yönetebiliriz.
+
+* Nasıl eklenir ?
+	- DC'ın server manager ekranında dashbord'da "add other servet to manage"2 tıklıyoruz -> Çıkan ekranda
+	- eklemek istediğimiz sunucunun adını girip makinayı bbuluyoruz.
+	- ortadaki butunla sağ tarafa aatıyoruz.
+	- okeyledikten sonra "all servers" kısmında sunucumuzu görebiliriz.
+
+-----------------
+
+	FILE SERVER YAPILANDIIRLMASI
+
+* File Server isimli server'ımızı File Server oalrak yapılandırıyoruz. Ancak bu yapılandırymayı DC'den yapıcaz.
+
+* DC'nin server manager'ından all servers tabına gelip ilgli server'ımını seçerek sağ tık yapıp rol eklemeye tıklıyoruz
+	- Role based... bir kurulum seçiyoruz
+	- Yülleyeceğimiz rol, "File And storage..." altıdna "File and iSCSI..." altında 
+	"File Server" ve "File Server Resource..." rolüdür.
+	- geri kalanlar nex next install.
+
+----------------
+
+	SHARES KONSOLU
+
+* File Server'ımızn ekranına gelip server manager "File and Storage" tabından "Shares" tabı altında paylaşımlarımızı yapıyoruz artık.
+	- Shares'ın üstünde -> Tasks -> New shares diyip çıknan panelden paylaşım yapılabilir 
+
+* Bu konsol'un artı yanları olduğu gibi miras olaylarında eksi yanları da olabilir. Bunun için normal yönetemle shares panalini
+birlikte kullananarak efektif sonuç alabiliriz.
+
+* bu ekrandan tüm paylaşımlarımızı gözlemleyebiliriz.
+
+* paylaşılmış kaynakalrdan sağ tık -> open shareng diyerek o kaynapa gidebiliriz.
+
+* Paylaşımlara kota belirleyerek herkesin o kalsör üzerinde istediğini yapmasını engelleyebiliyoruz.
+
+* Klasörlerde bulunmasını istemediğimiz dosya türlerini de seçebiliyoruz. 
+
+* paylaşımlara sağ tık -> stop sharing diyerek paylaşımı kapatabiliriz.
+
+----------------
+
+	ÖRNEK SENARYO
+
+* SENARYO : Ankarada bir satış ekibi var. Bunlar satis grubunda. Ayrıca bu grubunda bir team lideri var. 
+Bu tüm grubun ortak kullanabilmesi için File Server'a bir klasör oluşturcaz ve grubun datası burada bulunacak ve
+kendi içlerinde burayı kullanacaklar.
+
+* Satis ekibi için bir network sürücüsü oluşturacağız.
+
+* Paylaşmak istediğimiz klasör doğrudan c diskinin altıdnadır.
+
+* Task kısmından new sharing diyoruz ve çıkan seçenekeler :
+	> SMB - Quick : Hızlı paylaşım
+	> SMB - Advanced : Kota vs vbelirlediğimiz gelişmiş paylaşım
+	> SMB - Application : domainde çalışan app'ların network'e erişmek istediğinde bu paylaşım
+	> NFS - Quick 		: Bunlar için ortamda linux makina olması gerek
+	> NFS - Advanced	: Bunlar için ortamda linux makina olması gerek
+
+* Paneldeki kısımlar :
+
+	* Select Profile 
+		- SMB Quick ceçtik
+
+	* Share Location
+		- Server seçebilriiz
+		- Direkt diskin kendisini paylaşabiliriz
+		- Ya da dosy yolunu paylaşarak o klasörü paylaşırız.
+		- klasörümüzün yolunu girdik
+
+	* Share Name
+		- paylaşım adı ayarlanır
+		- paylaşım açıklaması ayarlanır
+		- paylaşımın local path'ı görülür
+		- paylaşımın network path'ı görülür
+
+	* Other Setting
+		- "Enable Access..." : Read izni olmayan kullanıcılara içeriği göstermiyor
+		- "Allow cashing..." : user ofline olduğunda cashe'den verileri sunuyor 	(Default olarak seçili)
+		- "Encorpty..." 	 : Veriye ekstra şifre tabakası geliyor.
+		- bu ekrana dokunmadan geçiyoruz
+
+	* Permission 
+		- system, Create owner, asministrator kullanıcıları için izinlere dokunmuyoruz 
+		- paylaştığımız klasöre doğruda c'nin altında olduğu için oraya diğer kullanıcıların erişimi olduğundan 
+		onların da otomatik izni geliyor. Bu izinleri kaldıryoruz.
+		- İzinler miras olarak geldiği için izinleri kaldırmadan önce mirası disable yapıyoruz.
+		- Erişmesini istediğimiz grubu buraya ekliyoruz.
+		- bu gruba modify yetkisi verdik.
+		- Bu ekrandaki "Applies to" kısmında verdiğimiz izinlerin alt-üst klasör,dosya gibi nerelerde geçerli olacağını seçebiliyoruz.
+		- "Tihs folder, subfolder and files"ı seçtik
+
+	* Devamında
+		- ön izleme ve oluşturma
+
+
+ NOT : Bilgisayardan sildiğimiz obje çop kutusuna gider ancak networkten sildiğimiz obje oaraya gitmez yok olur.
+
+ * paylaşım yapılan klasöir içinceki ilk 3 klasörü silememeleri için ne yapılması gerekiyor ?
+	- Silinemsini istemediğmiz klasörlerde mirası kaldırıp satis grubundan modify isnini alıyoruz.
+	- bu işlemi klasörde sağ tık yaparak yaptık. (Çünkü yönetim panaleinden uzun sürerdi.)
+
+* Ağ sürücüsü oluşturmak için kaynağa gidip sağ tık -> ağ sürücüsüne bağlan
+
+* Ağ sürcüsüne kota belirlemek için shares panelinden kaynağa sağ tık -> configure Quota
+	- Orada var olan 2 GB seçip okeyledik.
+
+* Modify izinlerini kaldırdığımız klasörlere team liderinin modfy yetkisinde olmasını isteiyoruz
+	- shares ekranından permission'dan lideri user olarak ekleyebiliriz
+	- Klasörelre sağ tık yapıp lideri user oalrak ekleriz
+
+----------------
+
+	PAYLAŞIMDA KOTA UYGULAMASI	-	FSRM
+
+* Tools'tan "File Servevice Resource"a gelerek daha önceden verdiğimiz kotayı düzenleyebiliriz.
+
+* Bu ekranda "Qouta Managment" altındaki seçeneklerden kota işlemlerini yapabiliriz.
+	- Quota Templates'a yeni kota templeytleri ekleeyebiliriz. böylece istediğimiz kotayı verebiliriz.
+	- yeni template oluştururken :
+		> soft kota : aşım duurmunda engelllemityor ancak uyarıyor
+		> hard kota : aşım duurmunda engelliyor.
+
+	NOTIFICATION THRESHOLD
+
+* oluşturduğumuz bu template ile paylaştığımız dosyayı konfigüre ederken ne kadar alan kaplıcağınız belirleyebiliriz.
+
+* bu diskler dolmaya yakın bize uyarı göndermeleri için ayarlarız. Bu gereklidir.
+	- Bunun için oluşturduğumuz tepmlate'ler için notication trashold'lar berilememiz gerkir.
+
+* "...Resource manager" panalinden template'lere çüft tıklyarak notifikation'lar belirleyebiliriz.
+	- belirli bir eşi geldiğinde mail atması olay günlüğüne yazılması gibi seçenekler vardır.
+
+* Böyle durumlarda mail atılabilmesi için aynı tools ekranındaki sol bölümde "File Server Resource..."e sağ tık -> "Configure options.."
+	- SMTP kutucuğuna : mai server'ının ip adresi girilmeli
+	- "Default Adminstrotor..." kısmına da adminlerin mail adresi girilmeli
+
+* Template'lere thrashold ekelrken göndermek istenilen mesajları düzenleyebiliriz. Ancak köşeli parantezlere dokunmayız.
+Çünkü oralrı sistem otomatik dolduruyor
+
+* thrashold durumunda e-mail gönderebilir, eventlere yadırabiliriz.
+
+---------------
+
+	FILE SERVER KAYNAĞINA VERİ GİRİŞİ ENGELİ
+
+* File server'daki kaynağımıza istemediğimiz verilerin girişini (mesela klasöre resim dosyası eklenemesin) 	
+
+* File Servevice Resource -> File Screening Managment :
+	> File Screnns : yasak uygulayacağımız kaynakalrı belirliyoruz.
+	> File Screnns tepmlate : hazır yazaklar var
+	> File group : belirli dosya uzantıları sistem tarafından gruplar halinde toplanmış
+
+* File Screen bölümünden sağ tık -> create screem diyerek yasağın uygulancağı kayanğı belirtitriz ve hazır tepmlate'lerden
+hangi yasağı eklediğimizi belirtiiriz.
+
+* File Screeening oluştururken :
+	- Active Screening : Bu duurmda yasaklı olan dosya türünü koydurtmuyor.
+	- ya da pasife Screening seçiyoruz : henüz anlamadım ?
+
+* Uyguladığımız yasağın girişiminde mail gönderimi log' kaydetme gibi işlemler yapabiliriz.
+	
+ 	LOGA KAYDETTİĞİMİZDE NASIL GÖRÜRÜRÜZ PEKİ ?
+
+* Server Manager -> Tools -> Event Viewer -> Custom Views -> Adminst... Events -> İşte logların gözüktüğü ekran

@@ -1,0 +1,44 @@
+* Sanal makinalar arasında ping komutu çalışması için kural yazılabilir.
+
+	1. Denetim Masası'nı Açın:
+		- Başlat menüsüne gidin ve "Denetim Masası"nı açın.
+	
+	2. Windows Defender Güvenlik Duvarı'nı Açın:
+		-"Sistem ve Güvenlik" bölümüne gidin ve ardından "Windows Defender Güvenlik Duvarı" seçeneğine tıklayın.
+
+	3. Gelişmiş Ayarları Açın:
+		- Sol panelde, "Gelişmiş ayarlar" seçeneğine tıklayın. Bu, Windows Defender Güvenlik Duvarı ile Gelişmiş Güvenlik (Windows Defender Firewall with Advanced Security) konsolunu açacaktır.
+
+	4. Gelen Kuralları Konfigüre Edin:
+		- Sol panelde "Gelen Kuralları"na tıklayın.
+		- Sağ panelde, "Yeni Kural..." seçeneğine tıklayın.
+
+	5. Kural Türünü Seçin:
+		- "Özel" (Custom) seçeneğini seçin ve "İleri" (Next) butonuna tıklayın.
+
+	6. Programı Seçin:
+		- "Tüm programlar" (All programs) seçeneğini seçip "İleri"ye tıklayın.
+
+	7. Protokol ve Bağlantı Noktası Seçin:
+		- Protokol türü olarak "ICMPv4" seçeneğini seçin ve "İleri"ye tıklayın.
+
+	8. Yerel ve Uzak Adresler:
+		- Yerel ve uzak IP adresleri için "Herhangi bir IP adresi" (Any IP address) seçeneğini seçip "İleri"ye tıklayın.
+	
+	9. Eylemi Belirleyin:
+		- "Bağlantıya izin ver" (Allow the connection) seçeneğini seçin ve "İleri"ye tıklayın.
+
+	10. Profil Seçimi:
+		- Bu kuralın uygulanacağı profil veya profilleri seçin (Domain, Private, Public) ve "İleri"ye tıklayın.
+
+	11. Kural Adını Belirleyin:
+		- Bu kurala bir ad verin (örneğin, "Ping İzin Ver" gibi) ve "Son" (Finish) butonuna tıklayın.
+
+
+-------------- YA DA ---------------
+
+* Firewall için yeni kural yazmak yerine 
+
+* Yeni kural yazmak için gittiğimiz ekranda gelen kurallar kısmında var olan kuralları aktif ediyoruz
+	- "Dosya ve Yazcı Paylaşımı (Yankı İsteği...)" kuralını etkinleştiriyoruz
+	- Bu kuraldan 4 tane var. Hepsini etkinleştiriyoruz (4 ten fazla ya da az da olabilir ama hepsi açılmalı)

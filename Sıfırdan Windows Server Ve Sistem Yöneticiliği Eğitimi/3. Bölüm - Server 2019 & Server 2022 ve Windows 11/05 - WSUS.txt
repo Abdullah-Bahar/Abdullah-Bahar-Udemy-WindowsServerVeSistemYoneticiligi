@@ -1,0 +1,140 @@
+
+	WSUS (Winsows Server Update Services)
+
+* Neteok'teki tüm makinaların internete çıkıp update alması network yavaşlamasını, bant genişliğinin daralmasını sebep olur. 
+Bunun için her makinanın internetten update almaması için ortama bir server kurulur. Bu server gerekli updateyi alır ve 
+bu update network içerisine local olarak dağırılır. Bunu yapan server'a "WSUS Server" denir.
+	- Mesela ortamda 1000 makina olsun. Bunların her birinin teker teker çıkması yerine bir server internete çıkar updateyi alır
+	ve makinalara dağıtır. Yani 1000 kere yerine 1 kere internete çıkmış olduk.
+
+* WSUS için :
+	- Upstream Modda çalışan server 	=>	İnternete çıkan WSUS servisi
+	- Downstream Modda çalışan server 	=>	İnterenete çıkan server'dan updati alır ve içeriye dağıtır. (İnternete çıkmaz yani)
+
+* 8530 portundan çalışır.
+
+------------------
+
+	WSUS KURMA (Rolü yapılandırma)
+
+* WSUS servisi DC'ye kurulmaz. Ayrı bir makinaya kurulur.
+
+* Servera bu rolü ekleyerek kuruyoruz.
+
+* Seçeğimiz rolün adı "Windowst Server Update Services" :
+	- Role Services Kısmı'a dokunmadan ilerliyoruz 
+		> Update'leri nerde tutacağımızı seçiyoruz. Windows içi database mi SQL Server mı ?
+		Default olarak bıraktığımız için Windows içi ve WSUS Servisi seçili oalrak geçtik.
+
+	- Sonraki ekranda internetten çekecek updateleri nerede tutacağını söylüyoruz.
+	(Bu yeri D diskinden seçersek daha güzel olacak)
+
+	- Geri kalan yerler next next diye geçiyrouz
+
+* Yüklme sonrası yapılandırma için sadece üstüne tıklamak yeterli. 
+
+NOT : Bununla birlikte IIS Servisi de gelecektir. Web servisini sunan bir servistir.
+
+-------------------
+
+	WSUS ROLÜ İLE GELEN HİZMETİ YAPILANDIRMA
+
+* Tools -> Win.. Ser.. Upd.. Services  -> Sırasıyla Ekranlar :
+
+	- next
+
+	- next
+
+	- next
+
+	- Choose Upstream Server : Updateleri nereden alacağımızı seçiyoruz
+		> Microsofttan (Seçtik)
+		> Ortamda eğer varsa başka bir WSUS'den alma
+
+	- ortamda proxy server varsa onun bilgilerini giriyoruz
+		> proxy serverımı olmadığı için geçiyoruz
+
+	- "Start Connecting" diyerek microsoftun update server'ları ile ilk bağlantımızı gerçekleştiriyoruz.
+		> Bu sırada mevcut ürünleri, updateleri, dil desteklerini topladı.
+		> Bu işlem biraz uzun sürebilir (15 dk - 30 dk)
+
+	- Ortamdaki makinaların dil destekelerine göre dilleri seçiyoruz.
+		> İngilizce ve türkçe seçtik
+		> Tüm dilleri Seçmek intihar olur.
+
+	- Microsoftun tüm ürünleri listelenir. Bu ürünlerin hangisinden update almak istediğimizi seçiyoruz.
+		> Burdan dikkatlice tün ürünleri seçmek lazım. 
+		> Windows 10 ve Sever 2022'yi seçtik
+
+	- Ürünler için istediğimiz update'lerden hangilerinin gelmesini istediğimizi seçiyoruz
+		> Seçtiklerimiz :
+			. Critical Up
+			. Defination Up
+			. Security Up
+			. Tools
+			. Updates
+			. Upgrades
+		> Bu ekrandan mesela Driver'ları seçmedik çünkü çok fazla update gelebileceği için buralardan işin içinden çıkamayabiliriz.
+
+	- Senkronizasyonun, yeni güncellemelerin var olup olmadığını seçiyoruz
+		> Ya manuel seçeriz elle gidip bakarız
+		> Ya da otomatik bir şekilde saat kaç günde bir bakması gerektiğini seçeriz.
+
+	- "Begin initional senc..." tikleyip ilerlersek updateler makinaya inmeye başlar. 
+		> Bu seçmedik daha sonra manul olarak başlatmak istediğimiz için.
+
+	- next
+
+	- finish
+
+--------------
+
+	WSUS İÇİN MAKİNALARI AYARLAMA
+
+* WSUS kurduktan sonra makinalarımız bu serverdan haber değillerdir hala microsoft sunucularından update aramaya giderler.
+Microsoft sunucuları yerine bizim WSUS serverımızla iletişim kurmaları için GOP oluşturacağız.
+	- İki taraf içinde geçerli aslında bu durum ne WSUS, makinaları ne de makinalar, WSUS'u görüyor.
+
+* Domain seviyesinde GOP oluşturduk -> Computer... -> Administrative.. -> win.. Companents -> windows updates ->
+	> WSUS server'ının yernini domaindeki makinalara gösteriyoruz : "Specifick intranet Microsoft update servise location" kuralı
+		. Enable yaptıktan sonra server'ın yolunu giriyoruz "http://ServerIP'si:8530" veya "http://ServerAdı:8530"
+		. Bu yolu girdikten sonra alttaki kutucuğa da bu yolu giriyoruz.
+		. Yani "option" altındaki ilk iki kutucağa yolu giriyoruz.
+
+	> "Configura otomaic updates" kuralından makinaların WSUS'dan aldığı updateleri nasıl alağını ve aldıktan sonra ne yapacaığını seçiyoruz.
+		. Enbale yaptıkran sonra Update'leri otomatik olarak indireceği ve yüklemek içinde bir zaman belirlemeyi seçiyoruz (4 numaralı olan seçenek)
+		. Saat ve günü ayarlıyoruz.
+
+	> "Automotic Updates Detection Frequency" kural üzerinden Client'lerin ne kadar sürede bir WSUS server'ına gidip 
+	update var mı kontrol etmelrini ayarlayabiliyoruz.
+		. Eğer bu kuralı enbale etmezsek Default olarak client'ler 22 saatte bir update var mı kontrol ederler.
+	
+--------------
+
+NOT : Windows makinaların WSUS server'larını tanıdığını ayarlar kısmındaki update bölümünde çıkan kırmızı yazıdan anlıyoruz 
+
+--------------
+
+	TOOLS'TAN WSUS PENCERESİ
+
+* Bu ekrandaki :
+	- "Updates" bölümünden indirdiğimiz updateleri ayarlayıp
+	- "Computers" bölümünden makinalara update atamalrını yapabiliyoruz
+		> NOT : Kurulumdan sonra bu pencerede makinalarımızın hepsi gözükmeyebilir. Yaklaşık olarak 72 saat içerisinde
+		gözükecektir.
+
+* Bu ekranda bilgisyarlar kısmından gruplar oluşturarak bilgisyarları gruplanrıabiliriz. Pc'leri bu gruplara atayabiliriz.
+	- Mesela Wİndows 10, Windows 11, Server 2019, Test gibi.... 
+
+---------------
+
+	UPDATE SERVİCES OPTİON BÖLÜMÜ
+
+* Bu ekrandan pek çok ayarlamalar yapabildiğimiz gibi client'lere manul olarak güncelleme basmak yerine otomatik olrak güncellemeleri
+basabiliyoruz. "Automatic approvals" kısmından bunu ayarlayabiliyoruz.
+
+* Otomatik güncelleme basmak için option altındaki Automatic approvals'den kurallar yazarız. 
+
+* Update'leri indiriyoruz ancak kullandıktan sonra diskte epey bi yer işgal ediyorlar. Updateler kullanıldıktan sonnra temizlenmeleri 
+gerekmektedir. Bunun için de "WSUS Server Cleanup Wirzard" kullanıyoruz.
+	- Buradan belli seçenekleri seçerekleri seçerek bu silme işlemlerini yapabiliriz.

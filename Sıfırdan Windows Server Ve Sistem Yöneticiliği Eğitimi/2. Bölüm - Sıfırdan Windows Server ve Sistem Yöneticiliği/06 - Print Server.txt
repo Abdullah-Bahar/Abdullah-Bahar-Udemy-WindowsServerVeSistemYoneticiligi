@@ -1,0 +1,81 @@
+
+	YAZICI 
+
+* Domain ortamında isek kullanıcışarın ortak kullanabilceği server'ı domani server'a katarak
+ortak kayank kullanımını sağlıyoruz. Bu durum workgruop'da da olabilir ancak daha zahmetleri olur.
+
+-----------------
+
+	YAZICI BAĞLAMA
+
+* Gerçek ortamlarda print DC'ra bağlanamz ancak bi burda yeterli alanımız olmadığı için file server ya da
+DC makinaya kurcaz
+
+* Domaine "Print and Document Service" rolünü ekliyoruz.
+
+* Çıkan seçnerkler :
+	> Print Server 		-> Normal printer işte (Seçtik)
+	> Distrubitud Scan Service
+	> Internet Service 	-> Şirket dışından printeR'ı kullanabilmek için 
+	> LPD Service 		-> Ortamda linux makinalar varsa faydalanabilmeleri için
+
+----------------
+
+	PRİNT MANAGMENT
+
+* Tools'tan bı panelere erişerek işlemlerimizi yapabiliriz. Yönetim paneli
+
+	PRİNTER EKLEME
+
+* Print Service -> Server1 (Sunucunnn adı) -> Printers sağ tık -> add... ->
+	LPT portundan printer ekleyeceğimiz için  "Add ... an existing printer"ı seçtik (Printer LPT portundan çalışır) ->
+	next -> install new driver -> Sanal olrak bi tane seçiyoruz işte -> Geri kalnı isim vermek next.
+								  Not : Eğer gerçek printer eklenecek ise "have disk"ten  yazıcının diskini göztereceksiniz.
+	
+	EKLENEN BU PRİNTER'DAN PC NASIL YARARLANACAK ?
+
+* Print hizmetinin kurulu olduğu server'a win + r'dan "\\ipAdress" yaptığımızda eklediğimiz yazıcı gözükecektir -> 
+	sağ tık -> bağlan
+
+---------------
+
+* GPO ile yazıcı dağıtımı ile alakalı bir makale
+	- https://www.cozumpark.com/windows-server-2019-uzerinde-group-policy-kullanarak-yazici-dagitimi/
+
+----------------
+
+	GPO İLE PRİNTER'A BAĞLANMA
+
+* GPO ile user'lara printer atması yapıyoruz.
+
+* Print Managment -> Printers -> eklemek istediğimiz printer'a sağ tık -> Deploy with gruop... -> 
+	GPO name'ine ilgi OU için  oluşturduğumuz boş bir GPO'yı giriyoruz ->  User'a mı PC'lere mi ekliceğimizi seçiyoruz ->
+	add diyip birityoruz.
+
+-----------------
+
+	PRİNT SERVER'DAKİ GÜVENLİK AÇIKLARI VE GELİŞMİŞ AYARLAMALAR
+
+1. Güvenlik açığımız var kapatmamız lazım. İlgili OU dışında priter'a erişim var mı ?
+	- Farklı OU'lardaki yazzıcıya erişimi kısıtlamamız gerek
+	- secutiy kısmında everyone çıkarığ muhase kullanıcılarını eklememiz gerek
+
+
+2. Yazıcıdan sadece siyah beyaz çıktı alınmasını istiyoruz
+	- Yazıcı sağ tık -> proporties -> General -> Prefencies... -> paper... -> Black and White
+
+3. Yazcıların AD'ye eklenmesini istiyoruz
+	- yAZICI SAĞ TIK -> proporties -> sharing -> List in directory'yi tikliyoruz
+
+4. yazıcı fiziksel olarak print server maki bagli olmak zorunda mı ? Network yazıcısı ekleme
+	- network yazıcısı doğrudan server'a bağlı değil üzeirnde RC45 portu ile switch'e bağlıdır. 
+	Bir ip alır ve bu şekilde iletişim gerçekleşir.
+	- server manager -> add printer -> Add a TCP/IP -> 
+	type of device : TCP/IP Device, Hostname'sine yazıcının ipsi giriliyor, "aouto detect.." yapmıyoruz ->  
+	bitirdikten sonra cihazımı arayıp bulamıcak -> Standart'ta devam ederek kendi hafızasında bulunan cihazlardan biri 
+	için drive kurmamızı isticek (eğer bulsaydı kendi otomatik yükleyecekti)
+
+* Printer'ın advanced tabından çalışma saaatlerini ayarlayabiliriz.
+* Advaced tabından prionity ile kullanıcılara öncelik sağlayabilirsiniz
+
+--------------------

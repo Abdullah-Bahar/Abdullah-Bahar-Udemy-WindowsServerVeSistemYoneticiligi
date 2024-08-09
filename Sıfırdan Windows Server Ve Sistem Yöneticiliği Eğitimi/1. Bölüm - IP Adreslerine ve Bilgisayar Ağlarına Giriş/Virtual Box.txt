@@ -1,0 +1,25 @@
+
+* Virtual Box'da sanal makina kurarken "katılımsız Kurulumu Atla" seçeneğini seçersek kurulum yapılırken
+sorulacak tüm cevapları elle yanıtlamış olacağız. Eğer seçmezsek ekstra bir dosya oluşturmamız gerekir.
+oluşturacağımız txt dosyasına, kurulum yapılırken soracağı tüm soruların cevabını yazarak soruların cevabını
+oradan almasını sağlarız. Böylece kurulumda hiçbir şey dokunmadan kendi kendine kurulmasını sağlarız.
+
+* Sanal makinayı kurduktan sonra işlemci, Ram kaynaklarını sonradan değiştirebiliyoruz.
+
+* Kurarken belirttiğimiz bir RAM miktarı işlmeciye nazaran daha önemli.
+
+* Sanal makinaların ekran boyutunun otomatik olarak doldurulması :
+	- Sanal Makina ekranınının üst bölmesinden aygıtlar sekmesine tıkla
+	- Seçenekler arasından "Misafir Eklentileri CD KalıbınaYerleştir..." seçeneğini seçiyoruz
+	- cd olarak takılmış gözüken bu şeyi çalıştırırıyoruz (next next next diyerek)
+	- Sonrasında sanal makina yeniden başlatılıyor
+	- Sanal makina ekranından görünümü seçip
+	- "Misafir ekranını otomatik olarak yeniden boyutlandır" seçeneğini seçiyoruz
+	- İşlem tamam
+
+-----------------
+
+* Virtual Box'da PC'lere verilen IP Vbox'ın içindeki DHCP server'ı tarafından verilme durumları olabiliyor.
+
+----------------
+

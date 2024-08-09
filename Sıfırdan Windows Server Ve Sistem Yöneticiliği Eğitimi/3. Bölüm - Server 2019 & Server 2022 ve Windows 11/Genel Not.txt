@@ -1,0 +1,8 @@
+
+	TPM YÖNETİMİ
+
+* Windows'larda bulunan TPM Modülü nedir ?
+
+* win + r -> tmp.msc
+
+----------------

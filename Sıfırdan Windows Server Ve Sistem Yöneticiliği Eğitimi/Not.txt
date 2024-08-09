@@ -1,0 +1,42 @@
+
+	GENEL
+
+* qos nedir ?
+
+* plc Programlama
+
+* https://canyouseeme.org/	->	Web Sitesi
+
+* http://ipbak.net/	-> IP'mize bakıyoeuz
+
+* wireless usb ethernet adapter
+
+------------------------
+
+	KOMUTLAR
+
+* ipconfig /flushdns
+
+* nslookup Server1
+* nslookup Server1.bahar.com
+
+* net stop dns
+* net start dns
+
+* net stop ntds
+* net start ntds
+
+
+************** Burası önemli aldığım hatayı düzeltti  *********
+* ipconfig /registerdns
+* ipconfig /flushdns
+
+--------------------------
+
+	PROBLEMLER
+
+* DNS Problemelri
+
+* "enter network credentials" sorunu 
+
+-------------------------

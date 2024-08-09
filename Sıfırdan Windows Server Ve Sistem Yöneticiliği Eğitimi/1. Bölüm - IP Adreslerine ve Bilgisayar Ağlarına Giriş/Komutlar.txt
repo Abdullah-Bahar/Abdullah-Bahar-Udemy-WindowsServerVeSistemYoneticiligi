@@ -1,0 +1,11 @@
+
+* ping <ip adress>
+	> ping -t : Durdurana kadar ping atmaya devam eder.
+	> -4 : replay mesajlarında ipv4'ü gösterir
+	> -6 : replay mesajlarında ipv6'ü gösterir
+
+* ipconfig
+	> ipconfig /all
+	> ipconfig /release : var olan ip'yi bıraktırıyoruz
+	> ipconfig /renew	: manuel olarak yeni ip istiyoruz
+	
